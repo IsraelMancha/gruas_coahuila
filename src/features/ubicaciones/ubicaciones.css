@@ -1,0 +1,17 @@
+.location-cards-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 40px;
+}
+.page-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-add-container {
+  display: flex;
+  justify-content: end;
+}
