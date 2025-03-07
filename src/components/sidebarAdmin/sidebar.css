@@ -1,0 +1,78 @@
+/* Sidebar base */
+.sidebar {
+  width: 250px;
+  color: #444;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease-in-out;
+  border: 1px solid #ddd;
+}
+
+/* Ocultar sidebar en pantallas pequeñas */
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+}
+
+/* Botón de menú (hamburguesa) */
+.menu-btn {
+  display: none;
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  color: #444;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .menu-btn {
+    display: block;
+  }
+}
+
+/* Estilos de navegación */
+.sidebar-header {
+  padding: 20px;
+  text-align: center;
+  font-size: 1.5rem;
+
+  && img {
+    width: 120px;
+    height: auto;
+  }
+}
+
+.sidebar-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-nav li {
+  padding: 15px;
+  border-bottom: 1px solid #ddd;
+}
+.sidebar-nav li:hover {
+  background-color: #29b7ea;
+}
+
+.sidebar-nav li a {
+  color: #444;
+  text-decoration: none;
+  display: block;
+  padding: 5px 0;
+}
+.sidebar-nav li a:hover {
+  color: white;
+}
