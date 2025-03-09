@@ -1,6 +1,6 @@
 import LocationCard from "../../components/LocationCard/locationCard";
 import locationIcon from "../../assets/icons/locationIcon";
-import BtnAdd from "../../components/btnAdd";
+import AgregarUbicacion from "../../components/addLocationModal/addLocationModal";
 import "../../components/btnAdd/btnAdd.css";
 import "./ubicaciones.css";
 
@@ -13,7 +13,7 @@ const Ubicaciones = () => {
         <h1>Ubicaciones</h1>
       </div>
       <div className="btn-add-container">
-        <BtnAdd />
+        <AgregarUbicacion />
       </div>
       <div className="location-cards-container">
         <LocationCard count={5} icon={locationIcon} location="Piedras Negras" />
