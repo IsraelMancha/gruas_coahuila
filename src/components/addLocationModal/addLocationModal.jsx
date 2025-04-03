@@ -1,64 +1,81 @@
-import { useState } from "react";
-import { agregarUbicacion } from "../../features/ubicaciones/ubicacionesService";
+import { useEffect, useState } from "react";
+import {
+  agregarUbicacion,
+  editarUbicacion,
+} from "../../features/ubicaciones/ubicacionesService";
 import "./modal.css";
 
-export default function AgregarUbicacion() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [nombreUbicacion, setNombreUbicacion] = useState(""); // Estado para el input
+export default function AgregarUbicacion({
+  onUbicacionAgregada,
+  ubicacionEditando,
+  onUbicacionEditada,
+  modalAbierto,
+  onCerrar,
+}) {
+  const [nombreUbicacion, setNombreUbicacion] = useState("");
 
-  const handleAgregarUbicacion = async () => {
+  useEffect(() => {
+    setNombreUbicacion(
+      ubicacionEditando ? ubicacionEditando.nombre_ubicacion : ""
+    );
+  }, [ubicacionEditando]);
+
+  const handleGuardarUbicacion = async () => {
     if (!nombreUbicacion.trim()) {
       alert("Por favor, ingresa un nombre válido.");
       return;
     }
 
-    // Preparamos el objeto con la clave correcta para enviar al servidor
-    const nuevaUbicacion = { nombre_ubicacion: nombreUbicacion };
+    if (ubicacionEditando) {
+      const respuesta = await editarUbicacion(ubicacionEditando.id_ubicacion, {
+        nombre_ubicacion: nombreUbicacion,
+      });
 
-    // Llamamos al servicio para agregar la ubicación
-    const respuesta = await agregarUbicacion(nuevaUbicacion);
-    console.log("Respuesta del servidor:", respuesta);
-
-    if (respuesta.status === "success") {
-      // Verificar si la respuesta indica éxito
-      setIsOpen(false); // Cerrar modal solo si la inserción fue exitosa
-      setNombreUbicacion(""); // Limpiar input
+      if (respuesta.status === "success") {
+        onUbicacionEditada();
+      } else {
+        alert("Hubo un error al editar la ubicación.");
+      }
     } else {
-      alert("Hubo un error al agregar la ubicación."); // Mostrar mensaje si hubo error
+      const respuesta = await agregarUbicacion({
+        nombre_ubicacion: nombreUbicacion,
+      });
+
+      if (respuesta.status === "success") {
+        onUbicacionAgregada();
+      } else {
+        alert("Hubo un error al agregar la ubicación.");
+      }
     }
+
+    onCerrar();
   };
 
   return (
-    <div>
-      <button onClick={() => setIsOpen(true)} className="btn">
-        Agregar
-      </button>
+    modalAbierto && (
+      <div className="modal-overlay">
+        <div className="modal-content">
+          <h2>
+            {ubicacionEditando ? "Editar ubicación" : "Agregar ubicación"}
+          </h2>
+          <input
+            type="text"
+            id="btn_add_location"
+            placeholder="Nombre de la ubicación"
+            value={nombreUbicacion}
+            onChange={(e) => setNombreUbicacion(e.target.value)}
+          />
 
-      {isOpen && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <h2>Agregar Ubicación</h2>
-            <input
-              type="text"
-              placeholder="Nombre de la ubicación"
-              value={nombreUbicacion}
-              onChange={(e) => setNombreUbicacion(e.target.value)} // Guardar el valor del input
-            />
-
-            <div className="modal-buttons">
-              <button
-                onClick={() => setIsOpen(false)}
-                className="btn btn-cancel"
-              >
-                Cancelar
-              </button>
-              <button className="btn btn-save" onClick={handleAgregarUbicacion}>
-                Guardar
-              </button>
-            </div>
+          <div className="modal-buttons">
+            <button onClick={onCerrar} className="btn btn-cancel">
+              Cancelar
+            </button>
+            <button className="btn btn-save" onClick={handleGuardarUbicacion}>
+              Guardar
+            </button>
           </div>
         </div>
-      )}
-    </div>
+      </div>
+    )
   );
 }

@@ -12,7 +12,7 @@ const obtenerUbicaciones = async () => {
     }
 
     const data = await response.json(); // Convertir la respuesta a JSON
-    console.log("saquen la dataaaa", data);
+
     return data;
   } catch (error) {
     console.error("Error al obtener ubicaciones:", error);
@@ -21,8 +21,6 @@ const obtenerUbicaciones = async () => {
 };
 
 const agregarUbicacion = async (ubicacion) => {
-  console.log("ubicacion", ubicacion);
-
   try {
     const response = await fetch(
       `${urlAPI}/gruas_coahuila/src/API/ubicaciones/insertarUbicacion.php`,
@@ -48,4 +46,63 @@ const agregarUbicacion = async (ubicacion) => {
   }
 };
 
-export { obtenerUbicaciones, agregarUbicacion };
+const editarUbicacion = async (id_ubicacion, { nombre_ubicacion }) => {
+  try {
+    const response = await fetch(
+      `${urlAPI}/gruas_coahuila/src/API/ubicaciones/editarUbicacion.php`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id_ubicacion,
+          nombre_ubicacion: nombre_ubicacion,
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const responseData = await response.json();
+    console.log(responseData);
+    return responseData;
+  } catch (error) {
+    console.error("Error al editar ubicación:", error);
+    return { error: "Error al editar ubicación" };
+  }
+};
+
+const eliminarUbicacion = async (id_ubicacion) => {
+  try {
+    const response = await fetch(
+      `${urlAPI}/gruas_coahuila/src/API/ubicaciones/eliminarUbicacion.php?id_ubicacion=${id_ubicacion}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const responseData = await response.json();
+    console.log(responseData);
+    return responseData;
+  } catch (error) {
+    console.error("Error al eliminar ubicación:", error);
+    return { error: "Error al eliminar ubicación" };
+  }
+};
+
+export {
+  obtenerUbicaciones,
+  agregarUbicacion,
+  editarUbicacion,
+  eliminarUbicacion,
+};

@@ -8,7 +8,6 @@ header('Access-Control-Allow-Origin: *'); // Permite todas las conexiones (puede
 header('Access-Control-Allow-Methods: POST, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
 
-
 include '../Database/conexion.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
@@ -17,29 +16,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Obtener los datos del cuerpo de la solicitud
     $data = json_decode(file_get_contents('php://input'), true);
+
     if (!$data) {
         echo json_encode(['status' => 'error', 'message' => 'No se recibieron datos']);
         exit();
     }
 
-    if (isset($data['nombre_ubicacion'])) {
+    if (isset($data['id_ubicacion']) && isset($data['nombre_ubicacion'])) {
+        $id_ubicacion = $data['id_ubicacion'];
         $nombreUbicacion = $data['nombre_ubicacion'];
 
         // Preparar la consulta para insertar la ubicación
-        $query = "INSERT INTO ubicaciones (nombre_ubicacion) VALUES (?)";
+        $query = "UPDATE ubicaciones SET nombre_ubicacion = ? WHERE id_ubicacion = ?";
         $stmt = $conn->prepare($query);
-        $stmt->bind_param("s", $nombreUbicacion);
+        $stmt->bind_param("si", $nombreUbicacion, $id_ubicacion);
 
         if ($stmt->execute()) {
-            echo json_encode(['status' => 'success', 'message' => 'Ubicación insertada correctamente']);
+            echo json_encode(['status' => 'success', 'message' => 'Ubicación actualizada correctamente']);
         } else {
-            echo json_encode(['status' => 'error', 'message' => 'Error al insertar la ubicación']);
+            echo json_encode(['status' => 'error', 'message' => 'Error al actualizar la ubicación']);
         }
     } else {
         echo json_encode(['status' => 'error', 'message' => 'Nombre de ubicación no proporcionado']);
     }
-
 }
+
+
+
+
+
 ?>
