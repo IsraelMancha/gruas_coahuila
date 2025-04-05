@@ -251,13 +251,139 @@ const AgregarRegistro = () => {
       {paso === 3 && (
         <div className="step">
           <label className="label-paso">Interior del Vehículo:</label>
-          <input
-            type="text"
-            name="interiorVehiculo"
-            value={formData.interiorVehiculo}
-            onChange={handleChange}
-            placeholder="Ej. Objetos encontrados"
-          />
+          {[
+            "Tablero",
+            "Volante",
+            "Radio/Estéreo",
+            "Eq. Sonido",
+            "Reloj",
+            "Encendedor",
+            "Espejos",
+            "Asientos",
+            "Tapetes",
+            "Bocinas",
+            "Luces",
+            "Aire Acond.",
+            "Compresor",
+            "Antena",
+            "Copas Rines",
+          ].map((item) => (
+            <div key={item} className="radio-group">
+              <span>{item}</span>
+              <label>
+                <input
+                  type="radio"
+                  name={item}
+                  value="bien"
+                  checked={formData[item] === "bien"}
+                  onChange={handleRadioChange}
+                />{" "}
+                Bien
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name={item}
+                  value="mal"
+                  checked={formData[item] === "mal"}
+                  onChange={handleRadioChange}
+                />{" "}
+                Mal
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name={item}
+                  value="no"
+                  checked={formData[item] === "no"}
+                  onChange={handleRadioChange}
+                />{" "}
+                No
+              </label>
+            </div>
+          ))}
+
+          <label className="label-paso">Motor:</label>
+          {["Gasolina", "Motor", "Ventilador", "Numerador", "Bomba/Agua"].map(
+            (item) => (
+              <div key={item} className="radio-group">
+                <span>{item}</span>
+                <label>
+                  <input
+                    type="radio"
+                    name={item}
+                    value="E"
+                    checked={formData[item] === "E"}
+                    onChange={handleRadioChange}
+                  />{" "}
+                  E
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    name={item}
+                    value="M"
+                    checked={formData[item] === "M"}
+                    onChange={handleRadioChange}
+                  />{" "}
+                  M
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    name={item}
+                    value="F"
+                    checked={formData[item] === "F"}
+                    onChange={handleRadioChange}
+                  />{" "}
+                  F
+                </label>
+                <label className="label-paso">Eléctrico:</label>
+                {[
+                  "Bateria",
+                  "Carburador",
+                  "Filtro de aire",
+                  "Distribuidor",
+                  "Bujias Cables",
+                  "Bobina",
+                ].map((item) => (
+                  <div key={item} className="radio-group">
+                    <span>{item}</span>
+                    <label>
+                      <input
+                        type="radio"
+                        name={item}
+                        value="bien_si"
+                        checked={formData[item] === "bien_si"}
+                        onChange={handleRadioChange}
+                      />{" "}
+                      Bien Sí
+                    </label>
+                    <label>
+                      <input
+                        type="radio"
+                        name={item}
+                        value="mal_no"
+                        checked={formData[item] === "mal_no"}
+                        onChange={handleRadioChange}
+                      />{" "}
+                      Mal No
+                    </label>
+                    <label>
+                      <input
+                        type="radio"
+                        name={item}
+                        value="no"
+                        checked={formData[item] === "no"}
+                        onChange={handleRadioChange}
+                      />{" "}
+                      No
+                    </label>
+                  </div>
+                ))}
+              </div>
+            )
+          )}
         </div>
       )}
 
