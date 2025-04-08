@@ -38,7 +38,13 @@ const AgregarRegistro = () => {
   };
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value, type } = e.target;
+
+    // setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormData((prev) => ({
+      ...prev,
+      [name]: type === "radio" ? value : value,
+    }));
   };
 
   const handleManiobraChange = (e) => {
@@ -276,7 +282,7 @@ const AgregarRegistro = () => {
                   name={item}
                   value="bien"
                   checked={formData[item] === "bien"}
-                  onChange={handleRadioChange}
+                  onChange={handleChange}
                 />{" "}
                 Bien
               </label>
@@ -286,7 +292,7 @@ const AgregarRegistro = () => {
                   name={item}
                   value="mal"
                   checked={formData[item] === "mal"}
-                  onChange={handleRadioChange}
+                  onChange={handleChange}
                 />{" "}
                 Mal
               </label>
@@ -296,7 +302,7 @@ const AgregarRegistro = () => {
                   name={item}
                   value="no"
                   checked={formData[item] === "no"}
-                  onChange={handleRadioChange}
+                  onChange={handleChange}
                 />{" "}
                 No
               </label>
@@ -314,7 +320,7 @@ const AgregarRegistro = () => {
                     name={item}
                     value="E"
                     checked={formData[item] === "E"}
-                    onChange={handleRadioChange}
+                    onChange={handleChange}
                   />{" "}
                   E
                 </label>
@@ -324,7 +330,7 @@ const AgregarRegistro = () => {
                     name={item}
                     value="M"
                     checked={formData[item] === "M"}
-                    onChange={handleRadioChange}
+                    onChange={handleChange}
                   />{" "}
                   M
                 </label>
@@ -334,7 +340,7 @@ const AgregarRegistro = () => {
                     name={item}
                     value="F"
                     checked={formData[item] === "F"}
-                    onChange={handleRadioChange}
+                    onChange={handleChange}
                   />{" "}
                   F
                 </label>
@@ -355,7 +361,7 @@ const AgregarRegistro = () => {
                         name={item}
                         value="bien_si"
                         checked={formData[item] === "bien_si"}
-                        onChange={handleRadioChange}
+                        onChange={handleChange}
                       />{" "}
                       Bien Sí
                     </label>
@@ -365,7 +371,7 @@ const AgregarRegistro = () => {
                         name={item}
                         value="mal_no"
                         checked={formData[item] === "mal_no"}
-                        onChange={handleRadioChange}
+                        onChange={handleChange}
                       />{" "}
                       Mal No
                     </label>
@@ -375,7 +381,7 @@ const AgregarRegistro = () => {
                         name={item}
                         value="no"
                         checked={formData[item] === "no"}
-                        onChange={handleRadioChange}
+                        onChange={handleChange}
                       />{" "}
                       No
                     </label>
