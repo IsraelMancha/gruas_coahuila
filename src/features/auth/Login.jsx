@@ -1,9 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import logo from "../../assets/logo_gc.png";
 import "../../styles/loginStyles.css";
 import "../../styles/globalStyles.css";
 
 const Login = () => {
+  // const [isLogged, setIsLogged] = useState(isInitiallyLogged);
+
+  // const handleLogin = () => {
+  //   setIsLogged(true);
+  // };
+
+  // const handleLogout = () => {
+  //   setIsLogged(false);
+  // };
+
   return (
     <div className="container-login">
       <div className="logo-container">
