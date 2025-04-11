@@ -27,6 +27,30 @@ const AgregarRegistro = () => {
     llaves: "",
     placas_frente: "",
     placas_atras: "",
+
+    // Paso 3: Interior del Vehículo
+    Tablero: "",
+    Volante: "",
+    "Radio/Estéreo": "",
+    "Eq. Sonido": "",
+    Reloj: "",
+    Encendedor: "",
+    Espejos: "",
+    Asientos: "",
+    Tapetes: "",
+    Bocinas: "",
+    Luces: "",
+    "Aire Acond.": "",
+    Compresor: "",
+    Antena: "",
+    "Copas Rines": "",
+
+    // Paso 3: Motor
+    Gasolina: "",
+    Motor: "",
+    Ventilador: "",
+    Numerador: "",
+    "Bomba/Agua": "",
   });
   const [total, setTotal] = useState(0);
 
