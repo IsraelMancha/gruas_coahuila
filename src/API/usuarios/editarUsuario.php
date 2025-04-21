@@ -10,6 +10,7 @@ header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-W
 
 include '../Database/conexion.php';
 
+
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
     exit();
@@ -23,23 +24,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 
-    if (isset($data['id_ubicacion']) && isset($data['nombre_ubicacion'])) {
-        $id_ubicacion = $data['id_ubicacion'];
-        $nombreUbicacion = $data['nombre_ubicacion'];
+    if (isset($data['id_usuario']) && isset($data['email'])) {
+        $id_usuario = $data['id_usuario'];
+        $email = $data['email'];
 
         // Preparar la consulta para insertar la ubicación
-        $query = "UPDATE ubicaciones SET nombre_ubicacion = ? WHERE id_ubicacion = ?";
+        $query = "UPDATE ubicaciones SET email = ? WHERE id_usuario = ?";
         $stmt = $conn->prepare($query);
-        $stmt->bind_param("si", $nombreUbicacion, $id_ubicacion);
+        $stmt->bind_param("si", $email, $id_usuario);
 
         if ($stmt->execute()) {
-            echo json_encode(['status' => 'success', 'message' => 'Ubicación actualizada correctamente']);
+            echo json_encode(['status' => 'success', 'message' => 'Usuario actualizado correctamente']);
         } else {
-            echo json_encode(['status' => 'error', 'message' => 'Error al actualizar la ubicación']);
+            echo json_encode(['status' => 'error', 'message' => 'Error al actualizar usuario']);
         }
     } else {
-        echo json_encode(['status' => 'error', 'message' => 'Nombre de ubicación no proporcionado']);
+        echo json_encode(['status' => 'error', 'message' => 'Email de usuario no proporcionado']);
     }
 }
+
+
 
 ?>
