@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     {
     "tabla": "entradas_salidas",
     "campos": {
-        "id_grua": 3,
+        "id_grua": 1,
         "fecha_hora": "2025-04-25 11:00:00",
         "kilometraje": 15300,
         "nivel_gasolina": "bajo",
