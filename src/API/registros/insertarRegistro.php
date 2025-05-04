@@ -19,15 +19,59 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 //  COMO ENVIAR LOS DATOS DESDE EL FRONT
 /*
     {
-    "tabla": "registros",
-    "campos": {
-        "id_grua": 3,
-        "fecha_hora": "2025-04-25 11:00:00",
-        "kilometraje": 15300,
-        "nivel_gasolina": "bajo",
-        "tipo_movimiento": "salida"
-    }
-    }
+  "tabla": "registros",
+  "campos": {
+    "folio": "002",
+    "id_tipo_auto": 2,
+    "id_ubicacion": 2,
+    "fecha": "2025-05-04",
+    "hora": "10:40:00",
+    "recogido_en": "carretera",
+    "autoridad": "Policía Municipal",
+    "motivo": "Revisión de rutina",
+    "km_registro": "12345",
+    "marca": "Nissan",
+    "modelo": "Altima",
+    "color": "Blanco",
+    "placas": "ABC-1234",
+    "estado": "Coahuila",
+    "infraccion": "Ninguna",
+    "unidad": "Unidad 5",
+    "agente": "Juan Pérez",
+    "num_serie": "1HGCM82633A123456",
+    "llaves": "SI",
+    "placas_frente": "NO",
+    "placas_traseras": "SI",
+    "tablero": "BIEN",
+    "volante": "BIEN",
+    "radio_estereo": "MAL",
+    "eq_sonido": "NO",
+    "reloj": "BIEN",
+    "encendedor": "NO",
+    "espejos": "BIEN",
+    "asientos": "MAL",
+    "tapetes": "BIEN",
+    "bocinas": "NO",
+    "luces": "BIEN",
+    "aire_acondicionado": "MAL",
+    "compresor": "NO",
+    "antena": "BIEN",
+    "copas_rines": "NO",
+    "bateria": "BIEN",
+    "carburador": "NO",
+    "filtro_aire": "MAL",
+    "distribuidor": "BIEN",
+    "bujias_cables": "NO",
+    "bobina": "BIEN",
+    "gasolina": "M",
+    "motor": "F",
+    "ventilador": "E",
+    "numerador": "F",
+    "bomba_agua": "M",
+    "observaciones": "Vehículo sin daños visibles. Revisado el 25 de abril de 2025."
+  }
+}
+
 */
 
 
