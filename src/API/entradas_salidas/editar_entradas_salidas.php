@@ -21,17 +21,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
     }
 
     // COMO ENVIAR LOS DATOS DESDE EL FRONT:
+
+    // OJO -> De esta forma la fecha_hora se actualiza automaticamente current timestamp, pero se puede enviar manualmente
 //     {
-//      "tabla": "entradas_salidas",
-//          "campos": {
-//              "kilometraje": 15500,
-//              "nivel_gasolina": "completo",
-//              "tipo_movimiento": "entrada"
-//          },
-//      "condiciones": {
-//      "id": 5
-//    }
+//   "tabla": "entradas_salidas",
+//   "campos": {
+//     "kilometraje": "13000",
+//     "nivel_gasolina": "3/4",
+//    "tipo_movimiento": "salida" 
+//   },
+//   "condiciones": {
+//     "id_grua": 1
+//   }
 // }
+
+
 
     $tabla = $data['tabla'];
     $campos = $data['campos'];          // Campos a actualizar
