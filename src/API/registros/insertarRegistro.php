@@ -88,6 +88,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $tabla = $data['tabla'];
     $campos = $data['campos'];
 
+    // Validar duplicado de folio por id_ubicacion si existen esos campos
+    if (isset($campos['folio']) && isset($campos['id_ubicacion'])) {
+        $folio = $campos['folio'];
+        $idUbicacion = $campos['id_ubicacion'];
+
+        $queryCheck = "SELECT COUNT(*) FROM $tabla WHERE folio = ? AND id_ubicacion = ?";
+        $stmtCheck = $conn->prepare($queryCheck);
+        if (!$stmtCheck) {
+            echo json_encode(['status' => 'error', 'message' => 'Error al preparar la validación de duplicado']);
+            exit();
+        }
+
+        $stmtCheck->bind_param('si', $folio, $idUbicacion);
+        $stmtCheck->execute();
+        $stmtCheck->bind_result($existe);
+        $stmtCheck->fetch();
+        $stmtCheck->close();
+
+        if ($existe > 0) {
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'Ya existe un registro con ese folio en la misma ubicación'
+            ]);
+            exit();
+        }
+    }
+
     // Validar nombre de la tabla (solo letras y guiones bajos)
     if (!preg_match('/^[a-zA-Z_]+$/', $tabla)) {
         echo json_encode(['status' => 'error', 'message' => 'Nombre de tabla inválido']);
