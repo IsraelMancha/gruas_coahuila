@@ -16,32 +16,71 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit();
 }
 
+//  COMO ENVIAR LOS DATOS DESDE EL FRONT
+// {
+//   "tabla": "usuarios",
+//   "campos": {
+//     "nombre_usuario": "usuario de prueba",
+//     "email": "correo@gmail.com",
+//      "password": "********",
+//      "rol_usuario": "admin" o "usuario" o "guardia",
+//      "id_ubicacion": 1 (SI ES ADMIN NO ENVIARLO)
+//   }
+// }
+
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Obtener los datos del cuerpo de la solicitud
+    // Leer y decodificar el cuerpo de la solicitud JSON
     $data = json_decode(file_get_contents('php://input'), true);
-    if (!$data) {
-        echo json_encode(['status' => 'error', 'message' => 'No se recibieron datos']);
+
+    // Validación inicial
+    if (!$data || !isset($data['tabla']) || !isset($data['campos'])) {
+        echo json_encode(['status' => 'error', 'message' => 'Datos insuficientes para la inserción']);
         exit();
     }
 
-    if (isset($data['nombre_ubicacion'])) {
-        $nombreUbicacion = $data['nombre_ubicacion'];
+    $tabla = $data['tabla'];
+    $campos = $data['campos'];
 
-        // Preparar la consulta para insertar la ubicación
-        $query = "INSERT INTO ubicaciones (nombre_ubicacion) VALUES (?)";
-        $stmt = $conn->prepare($query);
-        $stmt->bind_param("s", $nombreUbicacion);
-
-        if ($stmt->execute()) {
-            echo json_encode(['status' => 'success', 'message' => 'Ubicación insertada correctamente']);
-        } else {
-            echo json_encode(['status' => 'error', 'message' => 'Error al insertar la ubicación']);
-        }
-    } else {
-        echo json_encode(['status' => 'error', 'message' => 'Nombre de ubicación no proporcionado']);
+    // Validar nombre de la tabla (solo letras y guiones bajos)
+    if (!preg_match('/^[a-zA-Z_]+$/', $tabla)) {
+        echo json_encode(['status' => 'error', 'message' => 'Nombre de tabla inválido']);
+        exit();
     }
 
-}
+    // Construcción dinámica de columnas y valores
+    $columnas = implode(', ', array_keys($campos));              // Ej: id_grua, fecha_hora, kilometraje
+    $placeholders = implode(', ', array_fill(0, count($campos), '?')); // Ej: ?, ?, ?, ?, ?
+    $valores = array_values($campos);                            // Solo los valores
 
+    // Tipos dinámicos (esto puedes ajustarlo más adelante si quieres precisión tipo 'i', 'd', etc.)
+    $tipos = '';
+    foreach ($valores as $valor) {
+        if (is_int($valor)) {
+            $tipos .= 'i';
+        } elseif (is_float($valor)) {
+            $tipos .= 'd';
+        } else {
+            $tipos .= 's';
+        }
+    }
+
+    // Preparar y ejecutar la consulta
+    $query = "INSERT INTO $tabla ($columnas) VALUES ($placeholders)";
+    $stmt = $conn->prepare($query);
+
+    if (!$stmt) {
+        echo json_encode(['status' => 'error', 'message' => 'Error al preparar la consulta']);
+        exit();
+    }
+
+    $stmt->bind_param($tipos, ...$valores);
+
+    if ($stmt->execute()) {
+        echo json_encode(['status' => 'success', 'message' => 'Registro insertado correctamente']);
+    } else {
+        echo json_encode(['status' => 'error', 'message' => 'Error al insertar el registro']);
+    }
+}
 
 ?>
