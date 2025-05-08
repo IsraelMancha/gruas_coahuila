@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { login } from "./authService";
+import { login as loginService } from "./authService";
+import { useAuth } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 import logo from "../../assets/logo_gc.png";
 import "../../styles/loginStyles.css";
 import "../../styles/globalStyles.css";
@@ -7,20 +9,23 @@ import "../../styles/globalStyles.css";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [rol, setRol] = useState("");
+  const [error, setError] = useState(null);
+  const [rol, setRol] = useState(null);
+
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await login({ email, password });
+      const response = await loginService({ email, password });
       setRol(response.rol);
 
       if (response.success) {
-        // Guarda el token si aplica, o navega
-        localStorage.setItem("token", response.token); // si usas JWT, por ejemplo
-        window.location.href = "/ubicaciones"; // redirigir si quieres
+        login(response);
+        localStorage.setItem("user", JSON.stringify(response));
+        navigate("/ubicaciones");
       } else {
         setError(response.message || "Credenciales inválidas");
       }

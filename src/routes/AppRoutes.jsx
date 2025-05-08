@@ -6,6 +6,7 @@ import NotFound from "../components/notFound/NotFound";
 import MainLayout from "../layouts/MainLayout";
 import Ubicaciones from "../features/ubicaciones/Ubicaciones";
 import AgregarRegistro from "../features/registros/AgregarRegistro";
+import ProtectedRoute from "../components/ProtectedRoute";
 
 const AppRoutes = () => {
   return (
@@ -14,9 +15,30 @@ const AppRoutes = () => {
         <Route path="/" element={<Login />} />
         {/* Rutas con el layout principal */}
         <Route element={<MainLayout />}>
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/registros" element={<Registros />} />
-          <Route path="/ubicaciones" element={<Ubicaciones />} />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/registros"
+            element={
+              <ProtectedRoute>
+                <Registros />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/ubicaciones"
+            element={
+              <ProtectedRoute>
+                <Ubicaciones />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/agregarRegistro" element={<AgregarRegistro />} />
         </Route>
         {/* Ruta para páginas no encontradas */}
