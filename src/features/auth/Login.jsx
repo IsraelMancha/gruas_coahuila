@@ -1,18 +1,33 @@
 import React, { useState } from "react";
+import { login } from "../../services/authService"; // asegúrate de tener bien la ruta
 import logo from "../../assets/logo_gc.png";
 import "../../styles/loginStyles.css";
 import "../../styles/globalStyles.css";
 
 const Login = () => {
-  // const [isLogged, setIsLogged] = useState(isInitiallyLogged);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-  // const handleLogin = () => {
-  //   setIsLogged(true);
-  // };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  // const handleLogout = () => {
-  //   setIsLogged(false);
-  // };
+    try {
+      const response = await login({ email, password });
+
+      if (response.success) {
+        // Guarda el token si aplica, o navega
+        localStorage.setItem("token", response.token); // si usas JWT, por ejemplo
+        console.log("Login exitoso");
+        // window.location.href = "/dashboard"; // redirigir si quieres
+      } else {
+        setError(response.message || "Credenciales inválidas");
+      }
+    } catch (err) {
+      console.error("Error al iniciar sesión:", err);
+      setError("Error al conectar con el servidor");
+    }
+  };
 
   return (
     <div className="container-login">
@@ -20,21 +35,30 @@ const Login = () => {
         <img src={logo} alt="logotipo de Gruas Coahuila" />
       </div>
       <div className="form-container">
-        <form action="">
+        <form onSubmit={handleSubmit}>
           <div className="inputs-container">
             <input
               type="email"
               name="email"
               id="email"
               placeholder="Correo Electrónico"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
             />
             <input
               type="password"
               name="password"
               id="password"
               placeholder="Contraseña"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
             />
-            <button className="login-button">Iniciar Sesión</button>
+            {error && <p className="error-message">{error}</p>}
+            <button type="submit" className="login-button">
+              Iniciar Sesión
+            </button>
           </div>
         </form>
       </div>
