@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $email = $data['email'];
 
         // Preparar la consulta para insertar la ubicación
-        $query = "UPDATE ubicaciones SET email = ? WHERE id_usuario = ?";
+        $query = "UPDATE usuarios SET email = ? WHERE id_usuario = ?";
         $stmt = $conn->prepare($query);
         $stmt->bind_param("si", $email, $id_usuario);
 

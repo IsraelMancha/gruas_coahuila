@@ -19,61 +19,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 //  COMO ENVIAR LOS DATOS DESDE EL FRONT
 /*
     {
-  "tabla": "registros",
-  "campos": {
-    "folio": "002",
-    "id_tipo_auto": 2,
-    "id_ubicacion": 2,
-    "fecha": "2025-05-04",
-    "hora": "10:40:00",
-    "recogido_en": "carretera",
-    "autoridad": "Policía Municipal",
-    "motivo": "Revisión de rutina",
-    "km_registro": "12345",
-    "marca": "Nissan",
-    "modelo": "Altima",
-    "color": "Blanco",
-    "placas": "ABC-1234",
-    "estado": "Coahuila",
-    "infraccion": "Ninguna",
-    "unidad": "Unidad 5",
-    "agente": "Juan Pérez",
-    "num_serie": "1HGCM82633A123456",
-    "llaves": "SI",
-    "placas_frente": "NO",
-    "placas_traseras": "SI",
-    "tablero": "BIEN",
-    "volante": "BIEN",
-    "radio_estereo": "MAL",
-    "eq_sonido": "NO",
-    "reloj": "BIEN",
-    "encendedor": "NO",
-    "espejos": "BIEN",
-    "asientos": "MAL",
-    "tapetes": "BIEN",
-    "bocinas": "NO",
-    "luces": "BIEN",
-    "aire_acondicionado": "MAL",
-    "compresor": "NO",
-    "antena": "BIEN",
-    "copas_rines": "NO",
-    "bateria": "BIEN",
-    "carburador": "NO",
-    "filtro_aire": "MAL",
-    "distribuidor": "BIEN",
-    "bujias_cables": "NO",
-    "bobina": "BIEN",
-    "gasolina": "M",
-    "motor": "F",
-    "ventilador": "E",
-    "numerador": "F",
-    "bomba_agua": "M",
-    "observaciones": "Vehículo sin daños visibles. Revisado el 25 de abril de 2025."
-  }
-}
-
+        "tabla": "gruas",
+        "campos": {
+            "id_ubicacion": 3,
+            "modelo_grua": "modelo grua 3",
+            "marca_grua": "marca grua 3",
+            "placa_grua": "xxxxx-xxxxxxx3",
+            "no_serie_grua": "1234567890",
+            "year_grua": "2008",
+            "observaciones_grua": "ninguna observación. Todo en orden"
+        }
+    }
 */
-
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Leer y decodificar el cuerpo de la solicitud JSON
@@ -87,33 +44,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $tabla = $data['tabla'];
     $campos = $data['campos'];
-
-    // Validar duplicado de folio por id_ubicacion si existen esos campos
-    if (isset($campos['folio']) && isset($campos['id_ubicacion'])) {
-        $folio = $campos['folio'];
-        $idUbicacion = $campos['id_ubicacion'];
-
-        $queryCheck = "SELECT COUNT(*) FROM $tabla WHERE folio = ? AND id_ubicacion = ?";
-        $stmtCheck = $conn->prepare($queryCheck);
-        if (!$stmtCheck) {
-            echo json_encode(['status' => 'error', 'message' => 'Error al preparar la validación de duplicado']);
-            exit();
-        }
-
-        $stmtCheck->bind_param('si', $folio, $idUbicacion);
-        $stmtCheck->execute();
-        $stmtCheck->bind_result($existe);
-        $stmtCheck->fetch();
-        $stmtCheck->close();
-
-        if ($existe > 0) {
-            echo json_encode([
-                'status' => 'error',
-                'message' => 'Ya existe un registro con ese folio en la misma ubicación'
-            ]);
-            exit();
-        }
-    }
 
     // Validar nombre de la tabla (solo letras y guiones bajos)
     if (!preg_match('/^[a-zA-Z_]+$/', $tabla)) {

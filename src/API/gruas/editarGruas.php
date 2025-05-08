@@ -22,9 +22,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
 
     // COMO ENVIAR LOS DATOS DESDE EL FRONT:
 
-    // OJO -> De esta forma la fecha_hora se actualiza automaticamente current timestamp, pero se puede enviar manualmente
-//     {
-//   "tabla": "entradas_salidas",
+    //     {
+//   "tabla": "gruas",
 //   "campos": {
 //     "kilometraje": "13000",
 //     "nivel_gasolina": "3/4",
@@ -35,11 +34,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
 //   }
 // }
 
-
-
     $tabla = $data['tabla'];
     $campos = $data['campos'];          // Campos a actualizar
     $condiciones = $data['condiciones']; // Condiciones del WHERE
+
+
+    if (isset($campos['id_grua'])) {
+        $id_grua = $campos['id_grua'];
+        $queryCheck = "SELECT COUNT(*) FROM $tabla WHERE id_grua = ?";
+        $stmtCheck = $conn->prepare($queryCheck);
+
+        if (!$stmtCheck) {
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'Error al preparar la consulta'
+            ]);
+            exit();
+        }
+
+        $stmtCheck->bind_param('i', $id_grua);
+        $stmtCheck->execute();
+        $stmtCheck->bind_result($existe);
+        $stmtCheck->fetch();
+        $stmtCheck->close();
+
+        if ($existe === 0) {
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'No existe esa grúa'
+            ]);
+            exit();
+        }
+    }
+
 
     // Validar nombre de la tabla (seguridad básica)
     if (!preg_match('/^[a-zA-Z_]+$/', $tabla)) {
