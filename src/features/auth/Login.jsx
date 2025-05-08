@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { login } from "../../services/authService"; // asegúrate de tener bien la ruta
+import { login } from "./authService";
 import logo from "../../assets/logo_gc.png";
 import "../../styles/loginStyles.css";
 import "../../styles/globalStyles.css";
@@ -8,18 +8,19 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [rol, setRol] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       const response = await login({ email, password });
+      setRol(response.rol);
 
       if (response.success) {
         // Guarda el token si aplica, o navega
         localStorage.setItem("token", response.token); // si usas JWT, por ejemplo
-        console.log("Login exitoso");
-        // window.location.href = "/dashboard"; // redirigir si quieres
+        window.location.href = "/ubicaciones"; // redirigir si quieres
       } else {
         setError(response.message || "Credenciales inválidas");
       }
